@@ -9,6 +9,8 @@ var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
 
+var {generateMessage} = require('./utils/message');
+
 const port = process.env.PORT || 3000;
 
 app.use(express.static(publicPath));
@@ -22,26 +24,15 @@ io.on('connection',(socket)=>{
 
     //socket.emit from admin
     //socket.broadcast.emit from admin ostatnim  - tenhle uzivatel se prihlasil
-    socket.emit('newMessage',{
-        from: 'admin',
-        text: 'Vítej v chatovací appce'
-    });
+    socket.emit('newMessage',generateMessage('admin','Hoj, vítej zde'));
 
-    socket.broadcast.emit('newMessage',{
-        from:'admin',
-        text: 'Nový uživatel se připojil',
-        pripojilSev: new Date().getTime()
-    });
+    socket.broadcast.emit('newMessage',generateMessage('admin','Nový uživatel se připojil'));
 
 
    
      socket.on('createMessage',(message)=>{
         console.log('createMessage',message);
-        io.emit('newMessage',{
-            from: message.from,
-            text: message.text,
-            vytvoreno: new Date().getTime()
-        });
+        io.emit('newMessage',generateMessage(message.from, message.text));
         // socket.broadcast.emit('newMessage',{
         //     from: message.from,
         //     text: message.text,
