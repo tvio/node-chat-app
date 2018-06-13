@@ -20,17 +20,13 @@ app.get('/',(req,res)=>res.send('Ahojky'));
 io.on('connection',(socket)=>{
     console.log('New User connected');
    
-    
-
-    socket.emit('newMessage',{
-        from: 'John',
-        text: 'Hej',
-        vytvoreno: 123123
-    });
-
-  
-    socket.on('createMessage',(message)=>{
+     socket.on('createMessage',(message)=>{
         console.log('createMessage',message);
+        io.emit('newMessage',{
+            from: message.from,
+            text: message.text,
+            vytvoreno: new Date().getTime()
+        });
     });
 
     socket.on('disconnect',()=>{
