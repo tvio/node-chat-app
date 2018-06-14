@@ -9,7 +9,7 @@ var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
 
-var {generateMessage} = require('./utils/message');
+var {generateMessage,generateLocationMessage} = require('./utils/message');
 
 const port = process.env.PORT || 3000;
 
@@ -32,13 +32,16 @@ io.on('connection',(socket)=>{
    
      socket.on('createMessage',(message,callback)=>{
         console.log('createMessage',message);
+        
         io.emit('newMessage',generateMessage(message.from, message.text));
         callback('server to predal dal');
-        // socket.broadcast.emit('newMessage',{
-        //     from: message.from,
-        //     text: message.text,
-        //     vytvoreno: new Date().getTime()
-        // });
+     
+    });
+
+    socket.on('createLocationMessage',(coords)=>{
+        io.emit('newLocationMessage',generateLocationMessage('admin',coords.latitude,coords.longitude));
+        console.log('createLocationMessage',generateLocationMessage('admin',coords.latitude,coords.longitude));
+       
     });
 
     socket.on('disconnect',()=>{
