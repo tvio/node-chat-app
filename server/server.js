@@ -34,7 +34,7 @@ io.on('connection',(socket)=>{
         console.log('createMessage',message);
         
         io.emit('newMessage',generateMessage(message.from, message.text));
-        callback('server to predal dal');
+        callback();
      
     });
 
