@@ -14,7 +14,7 @@
       new RegExp(
         "([^?=&]+)(=([^&#]*))?", "g"),
         function($0, $1, $2, $3) {
-        	queryString[$1] = decodeURIComponent($3.replace(/\+/g, '%20'));
+        	queryString[$1] = decodeURIComponent($3.replace(/\+/g, '%20').toUpperCase());
         }
       );
       return queryString;

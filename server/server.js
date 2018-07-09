@@ -35,10 +35,15 @@ io.on('connection',(socket)=>{
    
 
     socket.on('join', (params, callback) =>{
-        if (!isRealString(params.name) || !isRealString(params.room)){
+        
+        if (!isRealString(params.name) || !isRealString(params.room) ){
           return  callback('Name and room are required.');
         }
-        
+        //hledam stejneho uzika
+        var locuser = users.getUserN(params.name);            
+        if (locuser){
+            return callback('Uživatelské jméno je již použito')
+        }
 
         socket.join(params.room);
         users.removeUser(socket.id);
