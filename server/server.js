@@ -22,6 +22,9 @@ var users = new Users();
 const port = process.env.PORT || 3000;
 
 app.use(express.static(publicPath));
+//testovani branch
+var testStat = path.join(__dirname + '../../playground');
+app.use(express.static(testStat));
 
 
 app.get('/',(req,res)=>res.send('Ahojky'));
@@ -84,11 +87,20 @@ io.on('connection',(socket)=>{
         }
     });
     
+    socket.on('getRooms',()=>{
+     var rooms = users.getRooms();
+        if (rooms) {
+            socket.emit('returnRooms' , rooms);
+            console.log('pokoje>>' + rooms);
+        }
+        
+    });
+
 });
 
 
+//server.listen(port,()=>console.log(`Chat app bezi na portu ${port}`));
 server.listen(port,()=>console.log(`Chat app bezi na portu ${port}`));
-
 
 
 // console.log(__dirname+ '/../public');

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charst="utf-8">
+        <title>Chat | ChatApp</title>
+         <meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=no">
+         <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body class="centered-form">
+        <div class="centered-form__form">
+           <form > 
+            <div class="form-field">
+                <h3>Chatovací appka</h3>
+            </div>
+            <div class="form-field">
+                <label>Jméno</label>
+                <input type="text" name="name" autofocus/>
+            </div>
+            
+            <div id="rooms">
+                   
+            </div>
+
+            <div class="form-field">
+                <label>Místnost</label>
+                <input type="text" name="room"/>
+            </div>
+
+            <div class="form-field">
+                <button>Vstoupit</button>
+            </div>
+           </form>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/jquery-3.3.1.min.js"></script>
+        <script src="room.js"></script>
+    </body>
+</html>
