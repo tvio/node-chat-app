@@ -45,24 +45,29 @@ io.on('connection',(socket)=>{
         users.addUser(socket.id,params.name,params.room);
 
         io.to(params.room).emit('updateUserList',users.getUserList(params.room));
-        console.log(users.getUserList(params.room));
+        //console.log(users.getUserList(params.room));
         socket.emit('newMessage',generateMessage('admin','Hoj, vítej zde'));
         socket.broadcast.to(params.room).emit('newMessage',generateMessage('admin',`Připojil se ${params.name}`));
         callback();
     });
    
      socket.on('createMessage',(message,callback)=>{
-        console.log('createMessage',message);
+        var user  = users.getUser(socket.id);
         
-        io.emit('newMessage',generateMessage(message.from, message.text));
+        if (user && isRealString(message.text)) {
+            io.to(user.room).emit('newMessage',generateMessage(user.name, message.text));
+        }
+        
         callback();
      
     });
 
     socket.on('createLocationMessage',(coords)=>{
-        io.emit('newLocationMessage',generateLocationMessage('admin',coords.latitude,coords.longitude));
-        console.log('createLocationMessage',generateLocationMessage('admin',coords.latitude,coords.longitude));
-       
+        var user  = users.getUser(socket.id);
+        if (user ) {  
+        io.to(user.room).emit('newLocationMessage',generateLocationMessage(user.name,coords.latitude,coords.longitude));
+       // console.log('createLocationMessage',generateLocationMessage('admin',coords.latitude,coords.longitude));
+        }
     });
 
     socket.on('disconnect',()=>{
